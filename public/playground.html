@@ -1,0 +1,398 @@
+
+<!-- <!DOCTYPE html>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+  <style>
+    
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .stations, .stations svg {
+      position: absolute;
+    }
+    
+    .stations svg {
+      width: 60px;
+      height: 20px;
+      padding-right: 100px;
+      font: 10px sans-serif;
+    }
+    
+    .stations circle {
+      fill: brown;
+      stroke: black;
+      stroke-width: 1.5px;
+    }
+    
+  </style>
+  <div id="map"></div>
+  <script src="//maps.google.com/maps/api/js?sensor=true"></script>
+  <script src="//d3js.org/d3.v3.min.js"></script>
+  <script>
+    
+    // Create the Google Map…
+    var map = new google.maps.Map(d3.select("#map").node(), {
+      zoom: 8,
+      center: new google.maps.LatLng(37.76487, -122.41948),
+      mapTypeId: google.maps.MapTypeId.TERRAIN
+    });
+    
+    // Load the station data. When the data comes back, create an overlay.
+    d3.json("stations.json", function(error, data) {
+      if (error) throw error;
+      
+      var overlay = new google.maps.OverlayView();
+      
+      // Add the container when the overlay is added to the map.
+      overlay.onAdd = function() {
+        var layer = d3.select(this.getPanes().overlayLayer).append("div")
+        .attr("class", "stations");
+        
+        // Draw each marker as a separate SVG element.
+        // We could use a single SVG, but what size would it have?
+        overlay.draw = function() {
+          var projection = this.getProjection(),
+          padding = 10;
+          
+          var marker = layer.selectAll("svg")
+          .data(d3.entries(data))
+          .each(transform) // update existing markers
+          .enter().append("svg")
+          .each(transform)
+          .attr("class", "marker");
+          
+          // Add a circle.
+          marker.append("circle")
+          .attr("r", 4.5)
+          .attr("cx", padding)
+          .attr("cy", padding);
+          
+          // Add a label.
+          marker.append("text")
+          .attr("x", padding + 7)
+          .attr("y", padding)
+          .attr("dy", ".31em")
+          .text(function(d) { return d.key; });
+          
+          function transform(d) {
+            d = new google.maps.LatLng(d.value[1], d.value[0]);
+            d = projection.fromLatLngToDivPixel(d);
+            return d3.select(this)
+            .style("left", (d.x - padding) + "px")
+            .style("top", (d.y - padding) + "px");
+          }
+        };
+      };
+      
+      // Bind our overlay to the map…
+      overlay.setMap(map);
+    });
+    
+  </script> -->
+  
+  
+  <!-- <!DOCTYPE html>
+  <html>
+    <head>
+      <title>Simple Map</title>
+      <meta name="viewport" content="initial-scale=1.0">
+      <meta charset="utf-8">
+      <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+          height: 100%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+          height: 100%;
+          margin: 0;
+          padding: 0;
+        }
+      </style>
+    </head>
+    <body>
+      <div id="map"></div>
+      <script>
+        var map;
+        function initMap() {
+          map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -34.397, lng: 150.644},
+            zoom: 8
+          });
+        }
+      </script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCL3iM8WVuVBMO0js8pGz4j6uzZBfF0OGQ&callback=initMap"
+      async defer></script>
+    </body>
+  </html> -->
+
+  <!DOCTYPE html>
+    <html>
+
+<head>
+  <title>311 Response Times</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+  <link href='https://api.mapbox.com/mapbox-gl-js/v0.40.0/mapbox-gl.css' rel='stylesheet' />
+  <link rel="stylesheet" href="./style.css"></link>
+</head>
+
+<body>
+  <header>
+    <h1>311 Resolution Times in NYC</h1>
+  </header>
+  <div id="app">
+    <svg width="960" height="960" font-family="sans-serif" font-size="10" text-anchor="middle"></svg>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script>
+
+      var svg = d3.select("svg"),
+        width = +svg.attr("width"),
+        height = +svg.attr("height");
+
+      var format = d3.format(",d");
+
+      var color = d3.scaleOrdinal(d3.schemeCategory20c);
+
+      var pack = d3.pack()
+        .size([width, height])
+        .padding(1.5);
+
+      //code to use when ready to parse actual data. this calculates the time to resolve each issue in a row in the dataset and sets the time to the 'value for that date'   
+      d3.csv("311_Service_Requests_from_2010_to_Present.csv", function (d) {
+        let createdDate = new Date(d["Created Date"])
+        let closedDate = new Date(d["Closed Date"])
+        let resolutionTime = (closedDate - createdDate)
+
+        d.value = resolutionTime
+        //convert the milliseconds elapsed between issue open/close into string with days and minutes
+        function msToTime(duration) {
+          var minutes = parseInt((duration / (1000 * 60)) % 60)
+            , hours = parseInt((duration / (1000 * 60 * 60)) % 24);
+
+          hours = (hours < 10) ? "0" + hours : hours;
+          minutes = (minutes < 10) ? "0" + minutes : minutes;
+          return hours + " hour(s) " + minutes + " minutes"
+        }
+
+        d.durationText = msToTime(resolutionTime)
+
+        if (d.value) return d;
+      }, function (error, classes) {
+        if (error) throw error;
+
+        var root = d3.hierarchy({ children: classes })
+          .sum(function (d) { return d.value; })
+          .each(function (d) {
+            if (Descriptor = d.data["Descriptor"]) {
+              d.descriptor = d.data["Descriptor"]
+              console.log("****", d.descriptor)
+            }
+          });
+
+        var node = svg.selectAll(".node")
+          .data(pack(root).leaves())
+          .enter().append("g")
+          .attr("class", "node")
+          .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+        node.append("circle")
+          .attr("descriptor", function (d) {
+            return d.descriptor;
+          })
+          .attr("r", function (d) { return d.r; })
+          //d.descriptor is the description of the type of complaint, all complaints with the same descriptor will have the same color
+          .style("fill", function (d) { return color(d.descriptor); });
+
+        node.append("clipPath")
+          .attr("id", function (d) { return "clip-" + d.descriptor; })
+          .append("use")
+          .attr("xlink:href", function (d) { return "#" + d.descriptor; });
+
+        node.append("text")
+          .attr("clip-path", function (d) { return "url(#clip-" + d.descriptor + ")"; })
+          .selectAll("tspan")
+          .data(function (d) { return d.descriptor.split(/(?=[A-Z][^A-Z])/g); })
+          .enter().append("tspan")
+          .attr("x", 0)
+          .attr("y", function (d, i, nodes) { return 13 + (i - nodes.length / 2 - 0.5) * 10; })
+          .text(function (d) { return d; });
+
+        node.append("title")
+          .text(function (d) { 
+            //adds pop up for duration when hovering over bubble
+            return d.data["Borough"] + "\n" + (d.data.durationText); });
+      });
+
+    </script>
+
+  </div>
+</body>
+
+</html>
+
+<!-- <aside>
+  <div class="panel" id="itinerary">
+    <div>
+      <h2>My Hotel</h2>
+      <ul class="list-group" id="hotels-list">
+
+      </ul>
+    </div>
+    <div>
+      <h2>My Restaurants</h2>
+      <ul class="list-group" id="restaurants-list">
+
+      </ul>
+    </div>
+    <div>
+      <h2>My Activities</h2>
+      <ul class="list-group" id="activities-list">
+
+      </ul>
+    </div>
+  </div>
+</aside> -->
+<!-- 
+<div class="panel" id="options-panel">
+  <div>
+    <h2>Hotels</h2>
+    <select id="hotels-choices">
+    </select>
+    <button id="hotels-add" class="add-btn">+</button>
+  </div>
+  <div>
+    <h2>Restaurants</h2>
+    <select id="restaurants-choices">
+    </select>
+    <button id="restaurants-add" class="add-btn">+</button>
+  </div>
+  <div>
+    <h2>Activities</h2>
+    <select id="activities-choices">
+    </select>
+    <button id="activities-add" class="add-btn">+</button>
+  </div>
+</div> -->
+
+
+<!-- ORIGINAL BUBBLE GRAPH CODE -->
+<!-- <!DOCTYPE html>
+<html>
+
+<head>
+  <title>311 Response Times</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+  <link href='https://api.mapbox.com/mapbox-gl-js/v0.40.0/mapbox-gl.css' rel='stylesheet' />  
+  <link rel="stylesheet" href="./style.css"></link>
+</head>
+
+<body>
+  <header>
+    <h1>311 Resolution Times in NYC</h1>
+  </header>
+  <div id="app">
+  <svg width="960" height="960" font-family="sans-serif" font-size="10" text-anchor="middle"></svg>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script>
+
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
+
+var format = d3.format(",d");
+
+var color = d3.scaleOrdinal(d3.schemeCategory20c);
+
+var pack = d3.pack()
+    .size([width, height])
+    .padding(1.5);
+
+d3.csv("flare.csv", function(d) {
+  d.value = +d.value
+  if (d.value) return d;
+}, function(error, classes) {
+  if (error) throw error;
+
+  var root = d3.hierarchy({children: classes})
+      .sum(function(d) { return d.value; })
+      .each(function(d) {
+        if (id = d.data.id) {
+          var id, i = id.lastIndexOf(".");
+          d.id = id;
+          d.package = id.slice(0, i);
+          d.class = id.slice(i + 1);
+          // console.log("*****", d.package, "****", d.class)
+        }
+      });
+
+  var node = svg.selectAll(".node")
+    .data(pack(root).leaves())
+    .enter().append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+  node.append("circle")
+      .attr("id", function(d) { return d.id; })
+      .attr("r", function(d) { return d.r; })
+      .style("fill", function(d) { return color(d.package); });
+
+  node.append("clipPath")
+      .attr("id", function(d) { return "clip-" + d.id; })
+    .append("use")
+      .attr("xlink:href", function(d) { return "#" + d.id; });
+
+  node.append("text")
+      .attr("clip-path", function(d) { return "url(#clip-" + d.id + ")"; })
+    .selectAll("tspan")
+    .data(function(d) { 
+      console.log(d.class)
+      return d.class.split(/(?=[A-Z][^A-Z])/g); })
+    .enter().append("tspan")
+      .attr("x", 0)
+      .attr("y", function(d, i, nodes) { return 13 + (i - nodes.length / 2 - 0.5) * 10; })
+      .text(function(d) { return d; });
+
+  node.append("title")
+      .text(function(d) { return d.id + "\n" + format(d.value); });
+});
+
+</script>
+
+  </div>
+</body>
+
+</html>
+
+
+
+
+<!-- <aside>
+  <div class="panel" id="itinerary">
+    <div>
+      <h2>My Hotel</h2>
+      <ul class="list-group" id="hotels-list">
+
+      </ul>
+    </div>
+    <div>
+      <h2>My Restaurants</h2>
+      <ul class="list-group" id="restaurants-list">
+
+      </ul>
+    </div>
+    <div>
+      <h2>My Activities</h2>
+      <ul class="list-group" id="activities-list">
+
+      </ul>
+    </div>
+  </div>
+</aside> -->
+<!-- 
