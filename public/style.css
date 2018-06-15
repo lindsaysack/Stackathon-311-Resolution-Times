@@ -5,12 +5,12 @@
 body {
   margin: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background-color: #C1B5AD;
+  background-color: #898E8C
 }
 
 h1 {
   margin: 0;
-  font-family: 'Lobster', cursive;  
+  font-family: 'Source Sans Pro';  
   font-weight: normal;
   font-size: 2rem;
 }
@@ -27,8 +27,8 @@ header {
   align-items: center;
   height: 3rem;
   padding: 0 0.5rem;
-  background-color: #736357;
-  color: #a8c9dd;
+  background-color:#191970;
+  color:#F0EDE5;
 }
 
 #app {
