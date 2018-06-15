@@ -6,39 +6,6 @@ const path = require("path");
 const db = require("./models").db;
 
 const app = express();
-const csvFilePath = './public/311_Service_Requests_from_2010_to_Present.csv'
-const csv = require('csvtojson');
-csv()
-  .fromFile(csvFilePath)
-  .then(jsonObj => {
-    function groupBy(objectArray, property) {
-      return objectArray.reduce(function(acc, obj) {
-        let key = obj[property];
-        if (!acc[key]) {
-          acc[key] = [];
-        }
-        acc[key].push(obj)
-        return acc
-      }, {})
-    }
-    let groupsByBorough = groupBy(jsonObj, 'Borough');
-    let queensComplaints = groupsByBorough.QUEENS
-    let brooklynComplaints = groupsByBorough.BROOKLYN
-    let statenIslandComplaints = groupsByBorough["STATEN ISLAND"]
-    let bronxComplaints = groupsByBorough.BRONX
-    let manhattanComplaints = groupsByBorough.MANHATTAN
-    
-    
-
-
-    // let groupsByComplaint = groupBy(groupsByBorough, 'Descriptor')
-    /**
-     * [
-     * 	{a:"1", b:"2", c:"3"},
-     * 	{a:"4", b:"5". c:"6"}
-     * ]
-     */
-  });
 
 // logging and body-parsing
 app.use(volleyball);
