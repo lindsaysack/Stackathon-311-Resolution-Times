@@ -837,10 +837,11 @@ d3.csv(
 
 function handleMouseOver(d, i) {
   // Add interactivity
-
+  d3.select(this)
+  .style("opacity", 0)
   // Use D3 to select element, change color and size
   d3.select(this).select("circle")
-  .style("opacity", .5)
+  // .style("opacity", 0)
     .attr("r", function() {
       // d.r = d.r * 2
       return d.r * 1.2
@@ -865,7 +866,11 @@ function handleMouseOver(d, i) {
 
 function handleMouseOut(d, i) {
   // Use D3 to select element, change color back to normal
+  d3.select(this)
+  .style("opacity", 1)
+
   d3.select(this).select("circle")
+  // .style("opacity", 1)
   .attr("fill", "black")
   .attr("r", function() {
     return d.r  
