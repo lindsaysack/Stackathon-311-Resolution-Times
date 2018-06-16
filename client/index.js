@@ -223,6 +223,7 @@ d3.csv(
       .attr("r", function(d) {
         return d.r;
       })
+      .style("opacity", 1.0)
       //d.descriptor is the description of the type of complaint, all complaints with the same descriptor will have the same color
       .style("fill", function(d) {
         return color(d.descriptor);
@@ -273,7 +274,7 @@ function handleMouseOver(d, i) {
 
   // Use D3 to select element, change color and size
   d3.select(this).select("circle")
-  .attr("descriptor", "orange")
+  .style("opacity", .5)
     .attr("r", function() {
       // d.r = d.r * 2
       return d.r * 1.2
