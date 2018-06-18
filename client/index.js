@@ -126,7 +126,7 @@ function handleMouseOver(d, i) {
     div.transition()		
     .duration(200)		
     .style("opacity", .9);		
-    div.text("Complaint Description: " + d.data["Descriptor"] + "\n" + "Time To Close Complaint: " + d.data.durationText)	
+    div.text("Time Resolve Complaint: " + d.data.durationText)	
     .style("left", (d3.event.pageX) + "px")		
     .style("top", (d3.event.pageY - 28) + "px");	
 }
