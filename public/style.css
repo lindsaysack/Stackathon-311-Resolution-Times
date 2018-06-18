@@ -5,19 +5,19 @@
 body {
   margin: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background-color: #898E8C
+  background-color: :#FFFFFF
 }
 
 h1 {
   margin: 0;
-  font-family: 'Source Sans Pro';  
-  font-weight: normal;
+  font-family: 'Source Serif Pro', 'Semi-Bold';  
+  font-weight: bold;
   font-size: 2rem;
 }
 
 h2 {
   margin: 0 0 0.5rem 0;
-  font-family: 'Lobster', cursive;
+  font-family: 'Source Sans Pro', cursive;
   font-weight: normal;
   font-size: 1.2rem;
 }
@@ -27,8 +27,8 @@ header {
   align-items: center;
   height: 3rem;
   padding: 0 0.5rem;
-  background-color:#191970;
-  color:#F0EDE5;
+  background-color:#FFFFFF;
+  color:#000000;
 }
 
 #app {
@@ -129,3 +129,21 @@ select {
   font-size: 13px;
   color: #333;
 }
+
+div.tooltip {	
+  position: absolute;			
+  text-align: center;			
+  width: 200px;					
+  height: 50px;					
+  padding: 2px;				
+  font: 12px sans-serif;		
+  background: rgb(216, 221, 226);	
+  border: 0px;		
+  border-radius: 8px;			
+  pointer-events: none;			
+}
+
+.legend rect {
+  fill:white;
+  stroke:black;
+  opacity:0.8;}

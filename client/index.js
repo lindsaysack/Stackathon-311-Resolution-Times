@@ -11,8 +11,11 @@ const buildMarker = require("./marker.js");
 var svg = d3.select("svg"),
 width = +svg.attr("width"),
 height = +svg.attr("height");
+var div = d3.select("body").append("div")	
+    .attr("class", "tooltip")				
+    .style("opacity", 0);
 var format = d3.format(",d");
-var color = d3.scaleOrdinal(d3.schemeCategory20c);
+var color = d3.scaleOrdinal(d3.schemeCategory10);
 var pack = d3.pack()
 .size([width, height])
 .padding(1.5);
@@ -47,9 +50,9 @@ d3.csv(
         return d.value;
       })
       .each(function(d) {
-        if ((Descriptor = d.data["Descriptor"])) {
-          d.descriptor = d.data["Descriptor"];
-        }
+        // if ((Borough = d.data["Borough"])) {
+          d.borough = d.data["Borough"];
+        // }
       });
 
     var node = svg
@@ -61,67 +64,68 @@ d3.csv(
       .attr("transform", function(d) {
         return "translate(" + d.x + "," + d.y + ")";
       })
-      .on("mouseover", handleMouseOver 
-        // function() {
-        // console.log("DATA", d3.select(this));
-        // d3.select(this).attr("class", "active");}
-    )
-      .on("mouseout", handleMouseOut 
-      // function() {
-        // d3.select(this).attr("class", "inactive");}
-      );
+      .on("mouseover", handleMouseOver)
+      .on("mouseout", handleMouseOut)
 
     node
       .append("circle")
-      .attr("descriptor", function(d) {
-        return d.descriptor;
+      .attr("borough", function(d) {
+        return d.borough;
       })
+      .attr("data-legend",function(d) { return d.borough})
       .attr("r", function(d) {
         return d.r;
       })
       .style("opacity", 1.0)
-      //d.descriptor is the description of the type of complaint, all complaints with the same descriptor will have the same color
       .style("fill", function(d) {
-        return color(d.descriptor);
+        return color(d.borough);
       });
 
-    node
-      .append("clipPath")
-      .attr("id", function(d) {
-        return "clip-" + d.descriptor;
-      })
-      .append("use")
-      .attr("href", function(d) {
-        return "#" + d.descriptor;
-      });
+      legend = svg.append("g")
+      .attr("class","legend")
+      .attr("transform","translate(50,30)")
+      .style("font-size","12px")
+      .call(d3.legend)
 
-    node
-      .append("text")
-      .attr("clip-path", function(d) {
-        return "url(#clip-" + d.descriptor + ")";
-      })
-      .selectAll("tspan")
-      .data(function(d) {
-        return d.descriptor.split(/(?=[A-Z][^A-Z])/g);
-      })
-      .enter()
-      .append("tspan")
-      .attr("x", 0)
-      .attr("y", function(d, i, nodes) {
-        return 13 + (i - nodes.length / 2 - 0.5) * 10;
-      })
-      .text(function(d) {
-        return d;
-      });
 
-    node
-      .append("div")
-      .attr("class", "tooltip")
-      .text(function(d) {
-        //adds pop up for duration when hovering over bubble
-        return d.data["Borough"] + "\n" + d.data.durationText;
-      })
-      .style("opacity", .5);
+    // node
+    //   .append("clipPath")
+    //   .attr("id", function(d) {
+    //     return "clip-" + d.borough;
+    //   })
+    //   .append("use")
+    //   .attr("href", function(d) {
+    //     return "#" + d.borough;
+    //   });
+
+    // node
+    //   .append("text")
+    //   .attr("clip-path", function(d) {
+    //     return "url(#clip-" + d.borough + ")";
+    //   })
+    //   .selectAll("tspan")
+    //   .data(function(d) {
+    //     return d.borough.split(/(?=[A-Z][^A-Z])/g);
+    //   })
+    //   .enter()
+    //   .append("tspan")
+    //   .attr("x", 0)
+    //   .attr("y", function(d, i, nodes) {
+    //     return 13 + (i - nodes.length / 2 - 0.5) * 10;
+    //   })
+    //   .text(function(d) {
+    //     console.log(d)
+    //     return d;
+    //   });
+
+    // node
+    //   .append("div")
+    //   .attr("class", "tooltip")
+    //   .text(function(d) {
+    //     //adds pop up for duration when hovering over bubble
+    //     return d.data["Borough"] + "\n" + d.data.durationText;
+    //   })
+    //   .style("opacity", .5);
   }
 );
 
@@ -136,22 +140,12 @@ function handleMouseOver(d, i) {
       // d.r = d.r * 2
       return d.r * 1.2
     })
-
-  // Specify where to put label of text
-  d3.select(this)
-    .append("text")
-    // .attr({
-    //   id: "t" + d.x + "-" + d.y + "-" + i, // Create an id for text so we can select it later for removing on mouseout
-    //   x: function() {
-    //     return xScale(d.x) - 30;
-    //   },
-    //   y: function() {
-    //     return yScale(d.y) - 15;
-    //   }
-    // })
-    .text(function() {
-      return d.data["Borough"] + "\n" + d.data.durationText; // Value of the text
-    });
+    div.transition()		
+    .duration(200)		
+    .style("opacity", .9);		
+    div.text("Complaint Description: " + d.data["Descriptor"] + "\n" + "Time To Close Complaint: " + d.data.durationText)	
+    .style("left", (d3.event.pageX) + "px")		
+    .style("top", (d3.event.pageY - 28) + "px");	
 }
 
 function handleMouseOut(d, i) {
@@ -165,6 +159,10 @@ function handleMouseOut(d, i) {
   .attr("r", function() {
     return d.r  
   })
+
+  div.transition()		
+  .duration(500)		
+  .style("opacity", 0);	
   // Select text by id and then remove
   // d3.select("#t" + d.x + "-" + d.y + "-" + i).remove(); // Remove text location
 }
