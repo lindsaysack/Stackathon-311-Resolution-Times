@@ -517,7 +517,16 @@ d3.json("NYC_MapInfo.topojson", function(error, nyc) {
 // </html>
  -->
 
-
+ const csvFilePath = '../../public/311_Service_Requests_from_2010_to_Present.csv'
+ // console.log("dsafsdfaswecdas", csvFilePath)
+ csv()
+   .fromFile(csvFilePath)
+   .then(jsonObj => {
+     console.log(jsonObj)
+     res.json("hey", jsonObj)
+     
+   })
+   .catch(next)
 
 <!-- <!DOCTYPE html>
 <html>
