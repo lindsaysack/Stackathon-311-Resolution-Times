@@ -396,3 +396,137 @@ d3.csv("flare.csv", function(d) {
   </div>
 </aside> -->
 <!-- 
+
+  <!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+  <title></title>
+   <!-- <script type="text/javascript"  src= "d3.min.js">
+      Modernizr.load({
+            test: Modernizr.svg && Modernizr.inlinesvg,
+            yep : [ 'd3.min.js',
+                    'js/script.js' ]
+        });
+   </script> -->
+   <!-- <script src="https://d3js.org/d3.v4.min.js"></script>
+   <script src="//d3js.org/topojson.v1.min.js"></script>
+</head>
+
+<body>
+    <script>
+      var width = 660,
+    height = 500;
+    
+var boroughs = {36047: 'Brooklyn', 36085: 'Staten Island', 36061: 'Manhattan', 36081: 'Queens', 36005: 'The Bronx'};
+var surroundings = [['New Jersey',[-74.143982, 40.853792]], ['Long Island',[-73.648224, 40.738700]]];
+
+var projection = d3.geoMercator()
+      .center([-73.96667, 40.78333])
+      .scale(47000)
+      .translate([310, 170]);
+
+var path = d3.geoPath()
+    .projection(projection);
+
+var svg = d3.select("#nyc").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", "0 0 660 500")
+    .attr("perserveAspectRatio", "xMinYMid");
+
+d3.json("NYC_MapInfo.topojson", function(error, nyc) {
+  // console.log(nyc.features)
+  var boroughs = topojson.feature(nyc, nyc.objects).features;
+  console.log(boroughs)
+  // var states = topojson.feature(nyc, nyc.objects.surrounding_states).features;
+  
+  svg.selectAll(".state")
+      .data(states)
+    .enter().append("path")
+      .attr("class", function(d) { return "state " + d.id; })
+      .attr("d", path);
+
+  svg.selectAll(".county")
+      .data(counties)
+    .enter().append("path")
+      .attr("class", function(d) { return "county fips_" + d.id; })
+      .attr("d", path);
+  
+  svg.selectAll(".county-label")
+      .data(counties)
+    .enter().append("text")
+      .attr("class", "county-label")
+      .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+      .attr("dy", ".35em")
+      .text(function(d) { return boroughs[d.id]; });
+  
+  svg.selectAll(".other-label")
+      .data(surroundings)
+    .enter().append("text")
+      .attr("class", "other-label")
+      .attr("transform", function(d) { return "translate(" + projection(d[1]) + ")"; })
+      .text(function(d) { return d[0]; });
+}); -->
+
+// // for map responsiveness on small screens
+// var chart = $("#nyc svg"),
+//     aspect = chart.width() / chart.height(),
+//     container = chart.parent();
+
+// $(window).on("resize", function() {
+//     var targetWidth = container.width();
+//     chart.attr("width", targetWidth);
+//     chart.attr("height", Math.round(targetWidth / aspect));
+// }).trigger("resize");
+
+//code to view all black boroughs
+//         var width = 960, 
+//             height = 1160;
+//         var projection = d3.geoMercator()
+//           .scale(100000)
+//           .translate([width / 2, height / 2]);
+      
+//         var svg = d3.select("body").append("svg")
+//           .attr("width", width)
+//           .attr("height", height);
+      
+//         d3.json("NYC_MapInfo.geojson", function(error, NYC_MapInfo) {
+      
+//           // after loading geojson, use d3.geo.centroid to find out 
+//           // where you need to center your map
+//           var center = d3.geoCentroid(NYC_MapInfo);
+//           projection.center(center);
+      
+//           // now you can create new path function with 
+//           // correctly centered projection
+//           var path = d3.geoPath().projection(projection);
+      
+//           // and finally draw the actual polygons
+//           svg.selectAll("path")
+//             .data(NYC_MapInfo.features)
+//             .enter()
+//             .append("path")
+//             .attr("d", path)
+          
+//         });
+
+      
+//       </script>
+//     </body>
+// </html>
+ -->
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <title>Trip Planner</title>
+    <link rel="stylesheet" href="./style.css"></link>
+    <script src="./bundle.js" defer></script>
+  </head>
+  <body>
+    <div id="map"></div>
+  </body>
+</html> -->
