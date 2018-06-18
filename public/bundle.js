@@ -616,46 +616,35 @@ d3.csv(
         return color(d.borough);
       });
 
+    node
+      .append("clipPath")
+      .attr("id", function(d) {
+        return "clip-" + d.data["Descriptor"];
+      })
+      .append("use")
+      .attr("href", function(d) {
+        return "#" + d.data["Descriptor"];
+      });
 
+    node
+      .append("text")
+      .attr("clip-path", function(d) {
+        return "url(#clip-" + d.data["Descriptor"] + ")";
+      })
+      .selectAll("tspan")
+      .data(function(d) {
+        return d.data["Descriptor"].split(/(?=[A-Z][^A-Z])/g);
+      })
+      .enter()
+      .append("tspan")
+      .attr("x", 0)
+      .attr("y", function(d, i, nodes) {
+        return 13 + (i - nodes.length / 2 - 0.5) * 10;
+      })
+      .text(function(d) {
+        return d;
+      });
 
-    // node
-    //   .append("clipPath")
-    //   .attr("id", function(d) {
-    //     return "clip-" + d.borough;
-    //   })
-    //   .append("use")
-    //   .attr("href", function(d) {
-    //     return "#" + d.borough;
-    //   });
-
-    // node
-    //   .append("text")
-    //   .attr("clip-path", function(d) {
-    //     return "url(#clip-" + d.borough + ")";
-    //   })
-    //   .selectAll("tspan")
-    //   .data(function(d) {
-    //     return d.borough.split(/(?=[A-Z][^A-Z])/g);
-    //   })
-    //   .enter()
-    //   .append("tspan")
-    //   .attr("x", 0)
-    //   .attr("y", function(d, i, nodes) {
-    //     return 13 + (i - nodes.length / 2 - 0.5) * 10;
-    //   })
-    //   .text(function(d) {
-    //     console.log(d)
-    //     return d;
-    //   });
-
-    // node
-    //   .append("div")
-    //   .attr("class", "tooltip")
-    //   .text(function(d) {
-    //     //adds pop up for duration when hovering over bubble
-    //     return d.data["Borough"] + "\n" + d.data.durationText;
-    //   })
-    //   .style("opacity", .5);
   }
 );
 
