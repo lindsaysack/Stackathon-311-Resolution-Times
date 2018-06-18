@@ -55,6 +55,10 @@ d3.csv(
         // }
       });
 
+      legendVals = d3.set(d.map( function(d) { return d.borough } ) ).values()
+        
+      console.log(legendVals)
+
     var node = svg
       .selectAll(".node")
       .data(pack(root).leaves())
@@ -72,7 +76,6 @@ d3.csv(
       .attr("borough", function(d) {
         return d.borough;
       })
-      .attr("data-legend",function(d) { return d.borough})
       .attr("r", function(d) {
         return d.r;
       })
@@ -81,11 +84,6 @@ d3.csv(
         return color(d.borough);
       });
 
-      legend = svg.append("g")
-      .attr("class","legend")
-      .attr("transform","translate(50,30)")
-      .style("font-size","12px")
-      .call(d3.legend)
 
 
     // node

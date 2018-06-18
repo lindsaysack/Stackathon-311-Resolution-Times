@@ -5,7 +5,7 @@
 body {
   margin: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background-color: :#FFFFFF
+  background-color: #FFFFFF
 }
 
 h1 {
@@ -15,7 +15,7 @@ h1 {
   font-size: 2rem;
 }
 
-h2 {
+p {
   margin: 0 0 0.5rem 0;
   font-family: 'Source Sans Pro', cursive;
   font-weight: normal;
@@ -61,8 +61,8 @@ aside {
   margin: 1rem;
   padding: 1rem;
   border-radius: 2px;
-  background-color: #EFECEA;
-  color: #aaa;
+  background-color: 778899
+  color: #000000;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
@@ -147,3 +147,28 @@ div.tooltip {
   fill:white;
   stroke:black;
   opacity:0.8;}
+
+/*HTML Vertical Lengend*/
+
+h3 {
+  margin-top: 15px;
+}
+.country-name {
+  margin: 0 !important;
+}
+
+.key-dot {
+  display: inline-block;
+  height: 10px;
+  margin-right: .5em;
+  width: 10px;
+}
+
+.legend {
+  margin-right:20px;
+}
+
+.queens { background: #1F77B4;}
+.kings { background: #FF7F0E;}
+.bronx { background: #2CA02C;
+}

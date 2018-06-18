@@ -15,8 +15,26 @@
       <h1>NYC 311 Complaint Resolution Times</h1>
     </header>
     <div id="app">
-      <div>
-        <p>311 is the City of New York's non-emergency service line.</p><p>Complaints are logged and data is collected on the type of issue, the location of the issue, the time a complaint was registered and the time it was marked as closed. </p>
+      <div class="panel" id="options-panel">
+        <p>311 is the City of New York's non-emergency service line.</p>
+        <p>Complaints are logged and data is collected on the type of issue, the location of the issue, the time a complaint was registered and the time it was marked as closed.</p>
+        <div class="legend1">
+            <h3>HTML Vertical Legend</h3>
+             <div class="legend1"> <p class="country-name"><span class="key-dot queens"></span>Queens</p> </div>
+             <div class="legend1"> <p class="country-name"><span class="key-dot kings"></span>Kings</p> </div>
+             <div class="legend1"> <p class="country-name"><span class="key-dot bronx"></span>Bronx</p> </div>
+             <div class="legend1"> <p class="country-name"><span class="key-dot kings"></span>Kings</p> </div>
+             <div class="legend1"> <p class="country-name"><span class="key-dot bronx"></span>Bronx</p> </div>
+          </div>
+        <form>
+            <fieldset>
+              <legend>Personalia:</legend>
+              Name: <input type="text" size="30"><br>
+              Email: <input type="text" size="30"><br>
+              Date of birth: <input type="text" size="10">
+            </fieldset>
+          </form>
+      
       </div>
       <div>
         <svg id="chart" width="960" height="960" font-family="Source Serif Pro" font-size="10" text-anchor="middle"></svg>
