@@ -168,7 +168,9 @@ h3 {
   margin-right:20px;
 }
 
-.queens { background: #1F77B4;}
-.kings { background: #FF7F0E;}
-.bronx { background: #2CA02C;
+.manhattan { background: #1F77B4;}
+.queens { background: #FF7F0E;}
+.brooklyn { background: #2CA02C;}
+.staten-island {background: rgb(148, 103, 189);}  
+.bronx {background: rgb(214, 39, 40);} 
 }

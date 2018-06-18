@@ -591,10 +591,6 @@ d3.csv(
         // }
       });
 
-      legendVals = d3.set(d.map( function(d) { return d.borough } ) ).values()
-        
-      console.log(legendVals)
-
     var node = svg
       .selectAll(".node")
       .data(pack(root).leaves())
