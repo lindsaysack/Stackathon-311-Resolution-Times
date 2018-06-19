@@ -1,11 +1,3 @@
-const mapboxgl = require("mapbox-gl");
-const api = require("./api");
-const buildMarker = require("./marker.js");
-
-// api.fetchJson().then(jsonObj => {
-//   console.log(jsonObj);
-// });
-
 // //code to use when ready to parse actual data. this calculates the time to resolve each issue in a row in the dataset and sets the time to the 'value for that date'
 var svg = d3.select("svg"),
   width = +svg.attr("width"),
@@ -15,9 +7,9 @@ var div = d3
   .append("div")
   .attr("class", "tooltip")
   .style("opacity", 0);
-var format = d3.format(",d");
+// var format = d3.format(",d");
 var color = d3.scaleOrdinal(d3.schemeCategory10);
-console.log(height)
+
 var pack = d3
   .pack()
   .size([width, height])
@@ -70,12 +62,14 @@ d3.csv(
       })
       .on("mouseover", handleMouseOver)
       .on("mouseout", handleMouseOut);
-
+      
     node
       .append("circle")
       .attr("borough", function(d) {
         return d.borough;
       })
+      .transition()
+      .delay(100)
       .attr("r", function(d) {
         return d.r;
       })
@@ -95,11 +89,11 @@ d3.csv(
       });
 
     node
-      .append("text")
-      .attr("clip-path", function(d) {
-        return "url(#clip-" + d.data["Descriptor"] + ")";
-      })
-      .selectAll("tspan")
+    .append("text")
+    .attr("clip-path", function(d) {
+      return "url(#clip-" + d.data["Descriptor"] + ")";
+    })
+    .selectAll("tspan")
       .data(function(d) {
         return d.data["Descriptor"].split(/(?=[A-Z][^A-Z])/g);
       })
