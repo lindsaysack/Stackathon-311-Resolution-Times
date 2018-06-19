@@ -542,19 +542,23 @@ const buildMarker = __webpack_require__(4);
 //   console.log(jsonObj);
 // });
 
-
 // //code to use when ready to parse actual data. this calculates the time to resolve each issue in a row in the dataset and sets the time to the 'value for that date'
 var svg = d3.select("svg"),
-width = +svg.attr("width"),
-height = +svg.attr("height");
-var div = d3.select("body").append("div")	
-    .attr("class", "tooltip")				
-    .style("opacity", 0);
+  width = +svg.attr("width"),
+  height = +svg.attr("height");
+var div = d3
+  .select("body")
+  .append("div")
+  .attr("class", "tooltip")
+  .style("opacity", 0);
 var format = d3.format(",d");
 var color = d3.scaleOrdinal(d3.schemeCategory10);
-var pack = d3.pack()
-.size([width, height])
-.padding(1.5);
+console.log(height)
+var pack = d3
+  .pack()
+  .size([width, height])
+  .padding(1.5);
+
 d3.csv(
   "311_Service_Requests_from_2010_to_Present.csv",
   function(d) {
@@ -587,7 +591,7 @@ d3.csv(
       })
       .each(function(d) {
         // if ((Borough = d.data["Borough"])) {
-          d.borough = d.data["Borough"];
+        d.borough = d.data["Borough"];
         // }
       });
 
@@ -601,7 +605,7 @@ d3.csv(
         return "translate(" + d.x + "," + d.y + ")";
       })
       .on("mouseover", handleMouseOver)
-      .on("mouseout", handleMouseOut)
+      .on("mouseout", handleMouseOut);
 
     node
       .append("circle")
@@ -644,44 +648,46 @@ d3.csv(
       .text(function(d) {
         return d;
       });
-
   }
 );
 
 function handleMouseOver(d, i) {
   // Add interactivity
-  d3.select(this)
-  .style("opacity", .25)
+  d3.select(this).style("opacity", 0.25);
   // Use D3 to select element, change color and size
-  d3.select(this).select("circle")
-  // .style("opacity", 0)
+  d3.select(this)
+    .select("circle")
+    // .style("opacity", 0)
     .attr("r", function() {
       // d.r = d.r * 2
-      return d.r * 1.2
-    })
-    div.transition()		
-    .duration(200)		
-    .style("opacity", .9);		
-    div.text("Time Resolve Complaint: " + d.data.durationText)	
-    .style("left", (d3.event.pageX) + "px")		
-    .style("top", (d3.event.pageY - 28) + "px");	
+      return d.r * 1.2;
+    });
+  div
+    .transition()
+    .duration(200)
+    .style("opacity", 0.9);
+  div
+    .text("Complaint Resolution Time: " + d.data.durationText)
+    .style("left", d3.event.pageX + "px")
+    .style("top", d3.event.pageY - 28 + "px");
 }
 
 function handleMouseOut(d, i) {
   // Use D3 to select element, change color back to normal
+  d3.select(this).style("opacity", 1);
+
   d3.select(this)
-  .style("opacity", 1)
+    .select("circle")
+    // .style("opacity", 1)
+    .attr("fill", "black")
+    .attr("r", function() {
+      return d.r;
+    });
 
-  d3.select(this).select("circle")
-  // .style("opacity", 1)
-  .attr("fill", "black")
-  .attr("r", function() {
-    return d.r  
-  })
-
-  div.transition()		
-  .duration(500)		
-  .style("opacity", 0);	
+  div
+    .transition()
+    .duration(500)
+    .style("opacity", 0);
   // Select text by id and then remove
   // d3.select("#t" + d.x + "-" + d.y + "-" + i).remove(); // Remove text location
 }
