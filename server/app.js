@@ -3,7 +3,7 @@ const volleyball = require("volleyball");
 const bodyParser = require("body-parser");
 const path = require("path");
 
-const db = require("./models").db;
+// const db = require("./models").db;
 
 const app = express();
 
@@ -34,11 +34,11 @@ app.use(function(err, req, res, next) {
 const port = 3000;
 app.listen(port, function() {
   console.log("The server is listening closely on port", port);
-  db.sync()
-    .then(function() {
-      console.log("Synchronated the database");
-    })
-    .catch(function(err) {
-      console.error("Trouble right here in River City", err, err.stack);
-    });
+  // db.sync()
+  //   .then(function() {
+  //     console.log("Synchronated the database");
+  //   })
+  //   .catch(function(err) {
+  //     console.error("Trouble right here in River City", err, err.stack);
+  //   });
 });

@@ -1,5 +1,5 @@
 // //code to use when ready to parse actual data. this calculates the time to resolve each issue in a row in the dataset and sets the time to the 'value for that date'
-var svg = d3.select("svg"),
+var svg = d3.select("#chart"),
   width = +svg.attr("width"),
   height = +svg.attr("height");
 var div = d3
